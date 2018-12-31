@@ -14,14 +14,15 @@ Usage
 =====
 
 ```Ruby
+require 'serial_scheduler'
 scheduler = SerialScheduler.new
 
 scheduler.add :foo, interval: 10, timeout: 2 do
-  puts "Doing foo"
+  puts 'Doing foo'
 end
 
 scheduler.add :bar, interval: 5, timeout: 1 do
-  puts "Doing bar"
+  puts 'Doing bar'
 end
 
 scheduler.run
