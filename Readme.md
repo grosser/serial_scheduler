@@ -2,6 +2,7 @@ Simple scheduler for long-running and infrequent tasks.
 
  - no threads, always in serial, to avoid out-of-memory issues and race-conditions
  - forks for each execution to avoid leaking memory
+ - no dependencies
 
 Install
 =======
