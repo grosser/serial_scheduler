@@ -1,14 +1,18 @@
 language: ruby
 sudo: false
 cache: bundler
+bundler_args: ""
 branches:
   only: master
 script: bundle exec rake $TASK
 env:
 - TASK=test
-- TASK=rubocop
 rvm:
   - 2.3
   - 2.4
   - 2.5
   - 2.6
+matrix:
+  include:
+  - rvm: 2.3 # keep in sync with lowest version
+    env: TASK=rubocop
