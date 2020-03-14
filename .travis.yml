@@ -7,10 +7,10 @@ script: bundle exec rake $TASK
 env:
 - TASK=test
 rvm:
-  - 2.3.8
-  - 2.4.5
-  - 2.5.3
-  - 2.6.0
+- 2.3
+- 2.4
+- 2.5
+- 2.6
 matrix:
   include:
   - rvm: 2.3.8 # keep in sync with lowest version
