@@ -3,6 +3,7 @@ Simple scheduler for long-running and infrequent tasks.
  - no threads, always in serial, to avoid out-of-memory issues and race-conditions
  - forks for each execution to avoid leaking memory
  - no dependencies
+ - supports crons with timezones
 
 Install
 =======
@@ -21,9 +22,13 @@ scheduler = SerialScheduler.new
 scheduler.add :foo, interval: 10, timeout: 2 do
   puts 'Doing foo'
 end
-
 scheduler.add :bar, interval: 5, timeout: 1 do
   puts 'Doing bar'
+end
+
+require 'fugit'
+scheduler.add :bar, cron: "* * * * * America/New_York", timeout: 1 do
+  puts 'Doing cron'
 end
 
 scheduler.run

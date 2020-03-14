@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative "test_helper"
+require "fugit"
 
 SingleCov.covered!
 
@@ -64,6 +65,13 @@ describe SerialScheduler do
       end.must_equal "1\n1\n"
     end
 
+    it "can run a cron" do
+      run_scheduler(0.5) do |f| # 0.5 = enough time for a fork
+        scheduler.expects(:sleep).at_least(1)
+        scheduler.add(:foo, cron: "* * * * *", timeout: 3) { f.puts 1 }
+      end.must_include "1\n"
+    end
+
     it "does not create zombies" do
       run_scheduler(1) do
         scheduler.add(:foo, interval: 1, timeout: 3) {}
@@ -72,7 +80,7 @@ describe SerialScheduler do
       running.split("\n").size.must_equal 1, running
     end
 
-    it "reports errors to rollbar" do
+    it "reports errors to via handler" do
       calls = []
       fake_fork
       scheduler.instance_variable_set(:@error_handler, ->(e) { calls << e })
@@ -99,6 +107,24 @@ describe SerialScheduler do
       assert_raises ArgumentError do
         scheduler.add(:foo, interval: 0, timeout: 1) {}
       end
+    end
+
+    it "raises on invalid cron" do
+      assert_raises ArgumentError do
+        scheduler.add(:foo, cron: "foo", timeout: 1) {}
+      end
+    end
+  end
+
+  describe SerialScheduler::Producer do
+    it "advances cron" do
+      now = Time.now.to_i
+      p = SerialScheduler::Producer.new(:foo, cron: "* * * * *", timeout: 1)
+      p.start(now)
+      a = p.next
+      b = p.next!
+      (a - now).must_be :<, 60
+      (b - a).must_equal 60
     end
   end
 end
