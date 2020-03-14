@@ -38,9 +38,11 @@ scheduler.run
 
 `SerialScheduler.new logger: my_logger`
 
+`message: "Waiting to start job", job: :foo, in: 15, at: '2019-12-30 11:00:00'`
+
 ### Errors
 
-Send to error service of your choice, or don't set it and it will raise.
+Send to error service of your choice, or don't set it and it will raise and stop.
 
 `SerialScheduler.new error_handler: ->(e) { puts e }`
 

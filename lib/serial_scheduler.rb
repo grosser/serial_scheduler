@@ -66,7 +66,7 @@ class SerialScheduler
       wait = [earliest.next - now, 0].max # do not wait when overdue
 
       if wait > 0
-        @logger.info message: "Waiting to start job", job: earliest.name, time: wait, at: Time.at(now).to_s
+        @logger.info message: "Waiting to start job", job: earliest.name, in: wait, at: Time.at(now).to_s
         wait.times do
           break if @stopped
 
