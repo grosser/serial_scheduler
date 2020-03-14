@@ -3,7 +3,7 @@ Simple scheduler for long-running and infrequent tasks.
  - no threads, always in serial, to avoid out-of-memory issues and race-conditions
  - forks for each execution to avoid leaking memory
  - no dependencies
- - supports crons with timezones
+ - supports crons with timezones via [fugit](https://github.com/floraison/fugit)
 
 Install
 =======
