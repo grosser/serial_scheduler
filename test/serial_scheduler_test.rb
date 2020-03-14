@@ -60,7 +60,7 @@ describe SerialScheduler do
     end
 
     it "executes multiple times" do
-      run_scheduler(1.5) do |f|
+      run_scheduler(1.9) do |f|
         scheduler.add(:foo, interval: 1, timeout: 3) { f.puts 1 }
       end.must_equal "1\n1\n"
     end
@@ -119,6 +119,7 @@ describe SerialScheduler do
   describe SerialScheduler::Producer do
     it "advances cron" do
       now = Time.now.to_i
+      now += 1 if now % 60 == 0
       p = SerialScheduler::Producer.new(:foo, cron: "* * * * *", timeout: 1)
       p.start(now)
       a = p.next
