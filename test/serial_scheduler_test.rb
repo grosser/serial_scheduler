@@ -67,6 +67,8 @@ describe SerialScheduler do
 
     it "can run a cron" do
       run_scheduler(0.5) do |f| # 0.5 = enough time for a fork
+        now = Time.now
+        Time.stubs(:now).returns(now, now + 60)
         scheduler.expects(:sleep).at_least(1)
         scheduler.add(:foo, cron: "* * * * *", timeout: 3) { f.puts 1 }
       end.must_include "1\n"

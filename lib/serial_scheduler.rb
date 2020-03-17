@@ -64,12 +64,12 @@ class SerialScheduler
       now = Time.now.to_i
       earliest = @producers.min_by(&:next)
       wait = [earliest.next - now, 0].max # do not wait when overdue
+      target = Time.at(now + wait)
 
       if wait > 0
-        @logger.info message: "Waiting to start job", job: earliest.name, in: wait, at: Time.at(now + wait).to_s
-        wait.times do
-          break if @stopped
-
+        @logger.info message: "Waiting to start job", job: earliest.name, in: wait, at: target.to_s
+        loop do
+          break if @stopped || Time.now >= target # need to re-check or long waits will drift by .3%
           sleep 1
         end
       end
