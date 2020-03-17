@@ -70,6 +70,7 @@ class SerialScheduler
         @logger.info message: "Waiting to start job", job: earliest.name, in: wait, at: target.to_s
         loop do
           break if @stopped || Time.now >= target # need to re-check or long waits will drift by .3%
+
           sleep 1
         end
       end
