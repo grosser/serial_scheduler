@@ -10,6 +10,6 @@ Gem::Specification.new name, SerialScheduler::VERSION do |s|
   s.homepage = "https://github.com/grosser/#{name}"
   s.files = `git ls-files lib/ bin/ MIT-LICENSE`.split("\n")
   s.license = "MIT"
-  s.required_ruby_version = ">= 2.3.0"
+  s.required_ruby_version = ">= 2.5.0" # keep in sync with .rubocop.yml
   s.add_development_dependency "fugit"
 end

@@ -10,7 +10,7 @@ describe SerialScheduler do
   let(:scheduler) { SerialScheduler.new(logger: logger) }
 
   it "has a VERSION" do
-    SerialScheduler::VERSION.must_match /^[\.\da-z]+$/
+    SerialScheduler::VERSION.must_match /^[.\da-z]+$/
   end
 
   describe "#run" do
