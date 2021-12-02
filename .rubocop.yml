@@ -39,3 +39,6 @@ Style/NumericPredicate:
 Lint/EmptyBlock:
   Exclude:
   - test/**/*
+
+Style/WordArray:
+  EnforcedStyle: brackets

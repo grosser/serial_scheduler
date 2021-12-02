@@ -52,8 +52,8 @@ class SerialScheduler
   end
 
   # start a new thread that enqueues an execution at given interval
-  def add(*args, &block)
-    @producers << Producer.new(*args, &block)
+  def add(*args, **kwargs, &block)
+    @producers << Producer.new(*args, **kwargs, &block)
   end
 
   def run
