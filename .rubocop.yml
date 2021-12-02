@@ -1,6 +1,7 @@
 AllCops:
-  DisplayCopNames: true
-  TargetRubyVersion: 2.3
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 2.5 # keep in sync with gemspec
 
 Style/StringLiterals:
   Enabled: false
@@ -34,3 +35,7 @@ Layout/MultilineMethodCallIndentation:
 
 Style/NumericPredicate:
   EnforcedStyle: comparison
+
+Lint/EmptyBlock:
+  Exclude:
+  - test/**/*

@@ -8,7 +8,7 @@ class SerialScheduler
   class Producer
     attr_reader :name, :next, :timeout, :block
 
-    def initialize(name, interval: nil, timeout:, cron: nil, &block)
+    def initialize(name, timeout:, interval: nil, cron: nil, &block)
       if cron
         cron = Fugit.do_parse_cron(cron)
       elsif !interval || interval < 1 || !interval.is_a?(Integer)
@@ -43,7 +43,7 @@ class SerialScheduler
     end
   end
 
-  def initialize(logger: Logger.new(STDOUT), error_handler: ->(e) { raise e })
+  def initialize(logger: Logger.new($stdout), error_handler: ->(e) { raise e })
     @logger = logger
     @error_handler = error_handler
 
@@ -90,12 +90,10 @@ class SerialScheduler
   def execute_in_fork(producer)
     @logger.info message: "Executing job", job: producer.name
     pid = fork do
-      begin
-        Timeout.timeout producer.timeout, &producer.block
-      rescue StandardError => e # do not rescue `Exception` so it can be `Interrupt`-ed
-        @logger.error message: "Error in job", job: producer.name, error: e.message
-        @error_handler.call(e)
-      end
+      Timeout.timeout producer.timeout, &producer.block
+    rescue StandardError => e # do not rescue `Exception` so it can be `Interrupt`-ed
+      @logger.error message: "Error in job", job: producer.name, error: e.message
+      @error_handler.call(e)
     end
     Process.wait pid
   end
